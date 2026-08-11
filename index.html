@@ -12,6 +12,7 @@
         <link rel="icon" href="logo.png">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        
         *,
         *::before,
         *::after {
@@ -1787,59 +1788,14 @@
         /* ===== footer ===== */
         footer {
             background: var(--bg-deep);
-            border-top: 1px solid var(--border);
-            padding: 70px clamp(18px, 5vw, 60px) 30px;
-        }
-
-        .footer-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr 1fr;
-            gap: 40px;
-        }
-
-        .footer-brand {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 30px;
-            letter-spacing: .08em;
-            color: var(--ink);
-            margin-bottom: 12px;
-        }
-
-        .footer-desc {
-            color: var(--muted);
-            font-size: 13.5px;
-            max-width: 280px;
-            line-height: 1.7;
-        }
-
-        .footer-col h4 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 12px;
-            letter-spacing: .25em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 16px;
-        }
-
-        .footer-col a {
-            display: block;
-            color: var(--ink-dim);
-            font-size: 14px;
-            margin-bottom: 10px;
-            transition: color .2s;
-        }
-
-        .footer-col a:hover {
-            color: var(--ink);
+            padding: 3px clamp(18px, 5vw, 60px) 5px;
         }
 
         .footer-bottom {
             max-width: 1200px;
             margin: 50px auto 0;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
+            padding-top: 1px;
+            padding-bottom: 20px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -1851,11 +1807,6 @@
             text-transform: uppercase;
         }
 
-        @media (max-width:760px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
 
         /* ===== quick view modal ===== */
         .modal-backdrop {
@@ -2057,11 +2008,6 @@
             transform: translateY(0);
         }
 
-        @media (max-width:520px) {
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-        }
 
         /* FLYZO — RESPONSIVE MEDIA QUERIES ONLY 
 
@@ -2073,8 +2019,8 @@
             }
 
             .cat-grid,
-            .product-grid,
-            .footer-grid {
+            .product-gr
+            {
                 max-width: 100%;
             }
 
@@ -2131,10 +2077,7 @@
                 padding: 13px 13px 15px;
             }
 
-            .footer-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 28px;
-            }
+  
         }
 
 
@@ -2311,25 +2254,10 @@
 
             /* Footer */
             footer {
-                padding: 50px 14px 25px;
+                   padding-top: 1px;
+            padding-bottom: 20px;
             }
 
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 25px 15px;
-            }
-
-            .footer-brand {
-                font-size: 25px;
-            }
-
-            .footer-desc {
-                font-size: 12px;
-            }
-
-            .footer-col a {
-                font-size: 12px;
-            }
 
             .footer-bottom {
                 margin-top: 30px;
@@ -2588,30 +2516,6 @@
                 letter-spacing: .12em;
             }
 
-            /* Footer */
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px 8px;
-            }
-
-            footer {
-                padding: 35px 7px 18px;
-            }
-
-            .footer-brand {
-                font-size: 20px;
-            }
-
-            .footer-desc,
-            .footer-col a {
-                font-size: 9px;
-            }
-
-            .footer-col h4 {
-                font-size: 8px;
-                margin-bottom: 9px;
-            }
-
             .footer-bottom {
                 font-size: 7px;
             }
@@ -2681,6 +2585,18 @@
             }
         }
 
+
+            footer {
+            text-align: center !important;
+        }
+
+        .footer-bottom {
+            justify-content: center !important;
+            align-items: center !important;
+            text-align: center !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+        }
 
     </style>
 </head>
@@ -2865,25 +2781,8 @@
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-grid">
-            <div>
-                <div class="footer-brand">FLYZO</div>
-                <p class="footer-desc">A clothing brand for people who move. Shoes, accessories and clothing, made
-                    for everyday wear.</p>
-               
-            </div>
-            <div class="footer-col">
-                <h4>Shop</h4>
-                <a href="#shoes">Shoes</a>
-                <a href="#accessories">Accessories</a>
-                <a href="#clothing">Clothing</a>
-                <a href="#shop">Shop All</a>
-            </div>
-
-        </div>
         <div class="footer-bottom">
             <span>© <span id="year"></span> Flyzo. All rights reserved.</span>
-            <span>Shoes · Accessories · Clothing</span>
         </div>
     </footer>
 
