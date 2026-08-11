@@ -149,73 +149,296 @@
             }
         }
 
-        /* ===== preloader ===== */
-        #preloader {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: var(--bg-deep);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity .7s var(--ease), visibility .7s;
-        }
+/* =========================================================
+   FLYZO — CINEMATIC PRELOADER
+   ========================================================= */
 
-        #preloader.done {
-            opacity: 0;
-            visibility: hidden;
-        }
+#preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
 
-        .pre-word {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(40px, 10vw, 90px);
-            letter-spacing: .14em;
-            display: flex;
-            overflow: hidden;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .pre-word span {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(60%);
-            animation: preIn .7s var(--ease) forwards;
-            background: linear-gradient(135deg, var(--ink-dim), var(--ink) 40%, var(--muted) 70%, var(--accent-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    background: #1a1b1d;
 
-        @keyframes preIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    overflow: hidden;
 
-        .pre-bar {
-            position: absolute;
-            bottom: 14%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 2px;
-            background: rgba(243, 242, 238, .14);
-            overflow: hidden;
-        }
+    transition:
+        opacity 1s cubic-bezier(.22, 1, .36, 1),
+        visibility 1s;
+}
 
-        .pre-bar i {
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            width: 0%;
-            animation: preBar 1.4s var(--ease) forwards .3s;
-        }
+#preloader::before {
+    content: "";
 
-        @keyframes preBar {
-            to {
-                width: 100%;
-            }
-        }
+    position: absolute;
+    width: 70vw;
+    height: 70vw;
+    max-width: 900px;
+    max-height: 900px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(201,169,97,.055) 0%,
+            rgba(201,169,97,.018) 35%,
+            transparent 68%
+        );
+
+    animation: loaderAtmosphere 5s ease-in-out infinite;
+}
+
+#preloader.done {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+/* ---------- loader content ---------- */
+
+.flyzo-loader {
+    position: relative;
+    z-index: 2;
+
+    width: min(600px, 78vw);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* ---------- logo ---------- */
+
+.loader-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-family: 'Bebas Neue', sans-serif;
+
+    font-size: clamp(72px, 15vw, 150px);
+    line-height: .78;
+
+    letter-spacing: .08em;
+
+    color: var(--ink);
+
+    perspective: 500px;
+}
+
+.loader-mark span {
+    display: inline-block;
+
+    opacity: 0;
+
+    transform:
+        translateY(100%)
+        rotateX(-70deg);
+
+    animation:
+        loaderLetterIn .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+
+.loader-mark span:nth-child(1) {
+    animation-delay: .05s;
+}
+
+.loader-mark span:nth-child(2) {
+    animation-delay: .10s;
+}
+
+.loader-mark span:nth-child(3) {
+    animation-delay: .15s;
+}
+
+.loader-mark span:nth-child(4) {
+    animation-delay: .20s;
+}
+
+.loader-mark span:nth-child(5) {
+    animation-delay: .25s;
+}
+
+.loader-mark span:last-child {
+    color: var(--accent-light);
+}
+
+
+/* ---------- line ---------- */
+
+.loader-rule {
+    position: relative;
+
+    width: min(360px, 65vw);
+    height: 1px;
+
+    margin-top: 32px;
+
+    background: rgba(243,242,238,.10);
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    animation:
+        loaderFade .6s ease forwards .65s;
+}
+
+.loader-rule i {
+    position: absolute;
+
+    top: 0;
+    left: -45%;
+
+    width: 45%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--accent),
+            var(--accent-light),
+            transparent
+        );
+
+    box-shadow:
+        0 0 14px rgba(201,169,97,.5);
+
+    animation:
+        loaderSweep 1.8s cubic-bezier(.65,0,.35,1) infinite;
+}
+
+
+/* ---------- caption ---------- */
+
+.loader-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 16px;
+
+    font-family: 'Barlow Condensed', sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: .32em;
+
+    color: var(--muted);
+
+    opacity: 0;
+
+    animation:
+        loaderFade .7s ease forwards .85s;
+}
+
+.loader-caption .loader-dot {
+    color: var(--accent);
+
+    font-size: 7px;
+}
+
+
+/* ---------- subtle background movement ---------- */
+
+@keyframes loaderAtmosphere {
+
+    0%, 100% {
+        transform: scale(.85);
+        opacity: .55;
+    }
+
+    50% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+}
+
+
+/* ---------- letters ---------- */
+
+@keyframes loaderLetterIn {
+
+    0% {
+        opacity: 0;
+        transform:
+            translateY(100%)
+            rotateX(-70deg);
+    }
+
+    60% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translateY(0)
+            rotateX(0);
+    }
+}
+
+
+/* ---------- fade ---------- */
+
+@keyframes loaderFade {
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* ---------- moving line ---------- */
+
+@keyframes loaderSweep {
+
+    0% {
+        left: -45%;
+    }
+
+    100% {
+        left: 110%;
+    }
+}
+
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 600px) {
+
+    .flyzo-loader {
+        width: 82vw;
+    }
+
+    .loader-mark {
+        font-size: 21vw;
+        letter-spacing: .06em;
+    }
+
+    .loader-rule {
+        width: 68vw;
+        margin-top: 26px;
+    }
+
+    .loader-caption {
+        font-size: 7px;
+        letter-spacing: .24em;
+        gap: 7px;
+    }
+}
 
         /* ===== nav ===== */
         header {
@@ -2466,11 +2689,23 @@
 
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
+<div id="preloader">
+    <div class="flyzo-loader">
 
-    <div id="preloader">
-        <div class="pre-word" id="pre-word"></div>
-        <div class="pre-bar"><i></i></div>
+        <div class="loader-mark">
+            <span>F</span>
+            <span>L</span>
+            <span>Y</span>
+            <span>Z</span>
+            <span>O</span>
+        </div>
+
+        <div class="loader-rule">
+            <i></i>
+        </div>
+
     </div>
+</div>
 
     <!-- NAV -->
     <header id="site-header">
@@ -2700,28 +2935,48 @@
         document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Flyzo! I have a question about your products.')}`;
         document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Flyzo! I have a question about your products.')}`;
 
-        /* ---------- preloader + hero wordmark split ---------- */
-        function splitLetters() {
-            const pre = document.getElementById('pre-word');
+    /* ---------- hero wordmark split ---------- */
+
+    function splitLetters() {
+
+        const wordmark = document.getElementById('hero-wordmark');
+
+        if (wordmark) {
+
             'FLYZO'.split('').forEach((ch, i) => {
+
                 const s = document.createElement('span');
-                s.textContent = ch;
-                s.style.animationDelay = (i * 0.06) + 's';
-                pre.appendChild(s);
-            });
-            const wordmark = document.getElementById('hero-wordmark');
-            'FLYZO'.split('').forEach((ch, i) => {
-                const s = document.createElement('span');
+
                 s.className = 'ch';
                 s.textContent = ch;
-                s.style.animationDelay = (0.15 + i * 0.05) + 's';
+
+                s.style.animationDelay =
+                    (0.15 + i * 0.05) + 's';
+
                 wordmark.appendChild(s);
             });
         }
-        splitLetters();
-        window.addEventListener('load', () => {
-            setTimeout(() => document.getElementById('preloader').classList.add('done'), 1500);
-        });
+    }
+
+    splitLetters();
+
+
+    /* ---------- loader ---------- */
+
+    window.addEventListener('load', () => {
+
+        setTimeout(() => {
+
+            const preloader =
+                document.getElementById('preloader');
+
+            if (preloader) {
+                preloader.classList.add('done');
+            }
+
+        }, 1700);
+
+    });
 
         /* ---------- custom cursor ---------- */
         const dot = document.getElementById('cursor-dot'), ring = document.getElementById('cursor-ring');
