@@ -1583,149 +1583,269 @@
             document.querySelector('#cat-grid .cat-btn[data-cat="shoes"]').classList.add('active');
         }
 
-  async function compressImage(file) {
-        return new Promise((resolve, reject) => {
-            const img = new Image();
-            const objectUrl = URL.createObjectURL(file);
+        async function compressImage(file) {
+                return new Promise((resolve, reject) => {
 
-            img.onload = async () => {
-                URL.revokeObjectURL(objectUrl);
+                    const img = new Image();
+                    const objectUrl = URL.createObjectURL(file);
 
-                let width = img.naturalWidth;
-                let height = img.naturalHeight;
+                    img.onload = async () => {
+                        URL.revokeObjectURL(objectUrl);
 
-                const MAX_DIMENSION = 700;
-                const MAX_SIZE = 100 * 1024; // HARD 100 KB LIMIT
-                const MIN_DIMENSION = 300;
+                        const MAX_SIZE = 100 * 1024; // HARD 100 KB
+                        const MAX_DIMENSION = 900;
 
-                if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
-                    const scale = Math.min(
-                        MAX_DIMENSION / width,
-                        MAX_DIMENSION / height
-                    );
+                        let width = img.naturalWidth;
+                        let height = img.naturalHeight;
 
-                    width = Math.round(width * scale);
-                    height = Math.round(height * scale);
-                }
+                        // -----------------------------------------
+                        // Resize only if image is larger than 900px
+                        // -----------------------------------------
+                        if (Math.max(width, height) > MAX_DIMENSION) {
 
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+                            const scale = MAX_DIMENSION / Math.max(width, height);
 
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
+                            width = Math.round(width * scale);
+                            height = Math.round(height * scale);
+                        }
 
-                async function makeBlob(quality) {
-                    canvas.width = width;
-                    canvas.height = height;
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d', {
+                            alpha: false
+                        });
 
-                    ctx.clearRect(0, 0, width, height);
-                    ctx.drawImage(img, 0, 0, width, height);
+                        canvas.width = width;
+                        canvas.height = height;
 
-                    return new Promise((resolveBlob, rejectBlob) => {
-                        canvas.toBlob(
-                            blob => {
-                                if (!blob) {
-                                    rejectBlob(
-                                        new Error('Compression failed')
-                                    );
-                                } else {
-                                    resolveBlob(blob);
-                                }
-                            },
-                            'image/webp',
-                            quality
+                        ctx.imageSmoothingEnabled = true;
+                        ctx.imageSmoothingQuality = 'high';
+
+                        // Draw ONCE
+                        ctx.drawImage(
+                            img,
+                            0,
+                            0,
+                            width,
+                            height
                         );
-                    });
-                }
 
-                let quality = 0.82;
-                let blob = await makeBlob(quality);
+                        // -----------------------------------------
+                        // Convert canvas -> WebP
+                        // -----------------------------------------
+                        function makeBlob(quality) {
+                            return new Promise((resolveBlob, rejectBlob) => {
 
-                // Gradually lower quality
-                while (blob.size > MAX_SIZE && quality > 0.45) {
-                    quality -= 0.05;
-                    blob = await makeBlob(quality);
-                }
+                                canvas.toBlob(
+                                    blob => {
 
-                // If still above 100 KB, reduce resolution
-                while (
-                    blob.size > MAX_SIZE &&
-                    width > MIN_DIMENSION
-                ) {
-                    width = Math.round(width * 0.90);
-                    height = Math.round(height * 0.90);
+                                        if (!blob) {
+                                            rejectBlob(
+                                                new Error('WebP compression failed')
+                                            );
+                                            return;
+                                        }
 
-                    quality = 0.70;
+                                        resolveBlob(blob);
 
-                    blob = await makeBlob(quality);
-                }
+                                    },
+                                    'image/webp',
+                                    quality
+                                );
 
-                // Final safety check
-                if (blob.size > MAX_SIZE) {
-                    quality = 0.35;
+                            });
+                        }
 
-                    while (blob.size > MAX_SIZE && quality > 0.10) {
-                        blob = await makeBlob(quality);
-                        quality -= 0.03;
-                    }
-                }
+                        // -----------------------------------------
+                        // First attempt: very good quality
+                        // -----------------------------------------
 
-                const compressedFile = new File(
-                    [blob],
-                    file.name.replace(/\.[^.]+$/, '.webp'),
-                    {
-                        type: 'image/webp',
-                        lastModified: Date.now()
-                    }
-                );
+                        let high = 0.90;
+                        let low = 0.25;
 
-                console.log('━━━━━━━━━━━━━━━━━━━━━━');
-                console.log(
-                    'Original:',
-                    (file.size / 1024 / 1024).toFixed(2),
-                    'MB'
-                );
+                        let bestBlob = null;
 
-                console.log(
-                    'Compressed:',
-                    (blob.size / 1024).toFixed(2),
-                    'KB'
-                );
+                        // Try high quality first
+                        let blob = await makeBlob(high);
 
-                console.log(
-                    'Compressed MB:',
-                    (blob.size / 1024 / 1024).toFixed(4),
-                    'MB'
-                );
+                        if (blob.size <= MAX_SIZE) {
+                            bestBlob = blob;
+                        } else {
 
-                console.log(
-                    'Resolution:',
-                    `${width} × ${height}`
-                );
+                            // -------------------------------------
+                            // Binary search for best quality
+                            // under 100 KB
+                            // -------------------------------------
 
-                console.log(
-                    'Quality:',
-                    quality.toFixed(2)
-                );
+                            for (let i = 0; i < 8; i++) {
 
-                console.log(
-                    'Under 100 KB:',
-                    blob.size <= MAX_SIZE
-                );
+                                const quality = (high + low) / 2;
 
-                console.log('━━━━━━━━━━━━━━━━━━━━━━');
+                                blob = await makeBlob(quality);
 
-                resolve(compressedFile);
-            };
+                                if (blob.size <= MAX_SIZE) {
 
-            img.onerror = () => {
-                URL.revokeObjectURL(objectUrl);
-                reject(new Error('Could not load image'));
-            };
+                                    // This quality fits
+                                    bestBlob = blob;
 
-            img.src = objectUrl;
-        });
-    }  async function uploadImage(file, progressId, barId) {
+                                    // Try even higher quality
+                                    low = quality;
+
+                                } else {
+
+                                    // Too large
+                                    high = quality;
+                                }
+                            }
+                        }
+
+                        // -----------------------------------------
+                        // If 900px still can't reach 100 KB,
+                        // reduce resolution intelligently.
+                        // -----------------------------------------
+
+                        if (!bestBlob) {
+
+                            let currentWidth = width;
+                            let currentHeight = height;
+
+                            while (!bestBlob && currentWidth > 500) {
+
+                                currentWidth = Math.round(currentWidth * 0.85);
+                                currentHeight = Math.round(currentHeight * 0.85);
+
+                                canvas.width = currentWidth;
+                                canvas.height = currentHeight;
+
+                                ctx.imageSmoothingEnabled = true;
+                                ctx.imageSmoothingQuality = 'high';
+
+                                ctx.drawImage(
+                                    img,
+                                    0,
+                                    0,
+                                    currentWidth,
+                                    currentHeight
+                                );
+
+                                high = 0.85;
+                                low = 0.25;
+
+                                for (let i = 0; i < 8; i++) {
+
+                                    const quality = (high + low) / 2;
+
+                                    blob = await makeBlob(quality);
+
+                                    if (blob.size <= MAX_SIZE) {
+
+                                        bestBlob = blob;
+                                        low = quality;
+
+                                    } else {
+
+                                        high = quality;
+                                    }
+                                }
+
+                                width = currentWidth;
+                                height = currentHeight;
+                            }
+                        }
+
+                        // -----------------------------------------
+                        // Absolute fallback
+                        // -----------------------------------------
+
+                        if (!bestBlob) {
+
+                            canvas.width = width;
+                            canvas.height = height;
+
+                            ctx.drawImage(
+                                img,
+                                0,
+                                0,
+                                width,
+                                height
+                            );
+
+                            bestBlob = await makeBlob(0.20);
+                        }
+
+                        // -----------------------------------------
+                        // Safety check
+                        // -----------------------------------------
+
+                        if (bestBlob.size > MAX_SIZE) {
+
+                            console.warn(
+                                'Image could not reach 100 KB:',
+                                (bestBlob.size / 1024).toFixed(2),
+                                'KB'
+                            );
+                        }
+
+                        const compressedFile = new File(
+                            [bestBlob],
+                            file.name.replace(/\.[^.]+$/, '') + '.webp',
+                            {
+                                type: 'image/webp',
+                                lastModified: Date.now()
+                            }
+                        );
+
+                        console.log('━━━━━━━━━━━━━━━━━━━━━━━━');
+                        console.log(
+                            'Original:',
+                            (file.size / 1024).toFixed(2),
+                            'KB'
+                        );
+
+                        console.log(
+                            'Compressed:',
+                            (bestBlob.size / 1024).toFixed(2),
+                            'KB'
+                        );
+
+                        console.log(
+                            'Compression:',
+                            (
+                                100 -
+                                (bestBlob.size / file.size) * 100
+                            ).toFixed(1) + '% saved'
+                        );
+
+                        console.log(
+                            'Resolution:',
+                            `${width} × ${height}`
+                        );
+
+                        console.log(
+                            'Under 100 KB:',
+                            bestBlob.size <= MAX_SIZE
+                        );
+
+                        console.log('━━━━━━━━━━━━━━━━━━━━━━━━');
+
+                        resolve(compressedFile);
+                    };
+
+                    img.onerror = () => {
+
+                        URL.revokeObjectURL(objectUrl);
+
+                        reject(
+                            new Error('Could not load image')
+                        );
+                    };
+
+                    img.src = objectUrl;
+                });
+            }
+
+            
+
+     async function uploadImage(file, progressId, barId) {
             const path = `products/${Date.now()}_${Math.random().toString(36).slice(2)}.webp`;
 
             document.getElementById(progressId).style.display = 'block';
@@ -1791,30 +1911,78 @@
             renderProductList();
         }
 
-      function adminThumb(url) {
-            return sizedImg(url, 220, 65);
-        }
+     
+        function sizedImg(url, width, quality = 70) {
 
-        function sizedImg(url, w, q) {
-            if (!url) return url;
+                if (!url) return url;
 
-            const sep = url.includes('?') ? '&' : '?';
+                try {
 
-            return `${url}${sep}width=${w}&quality=${q}`;
-        }
+                    const marker = '/storage/v1/object/public/';
 
-        function gridThumb(url) {
-            return sizedImg(url, saverOn ? 180 : 300, saverOn ? 55 : 70);
-        }
+                    const index = url.indexOf(marker);
 
-        function tinyPlaceholder(url) {
-            return sizedImg(url, 30, 30);
-        }
+                    if (index === -1) {
+                        return url;
+                    }
 
-        function fullImg(url) {
-            return sizedImg(url, saverOn ? 500 : 700, saverOn ? 60 : 80);
-        }
+                    const storagePath =
+                        url.substring(index + marker.length);
 
+                    const slash = storagePath.indexOf('/');
+
+                    if (slash === -1) {
+                        return url;
+                    }
+
+                    const bucket =
+                        storagePath.substring(0, slash);
+
+                    const filePath =
+                        storagePath.substring(slash + 1);
+
+                    return `${SUPABASE_URL}/storage/v1/render/image/public/${bucket}/${filePath}?width=${width}&quality=${quality}&resize=cover`;
+
+                } catch (e) {
+
+                    console.warn(
+                        'Image transform failed:',
+                        e
+                    );
+
+                    return url;
+                }
+            }
+
+    function adminThumb(url) {
+        // Maximum clarity within the admin thumbnail size
+        return sizedImg(url, 220, 100);
+    }
+
+    function gridThumb(url) {
+        // Keep the same dimensions/bandwidth targets,
+        // but use maximum image quality.
+        return sizedImg(
+            url,
+            saverOn ? 180 : 300,
+            100
+        );
+    }
+
+    function tinyPlaceholder(url) {
+        // Placeholder remains tiny, so bandwidth is negligible.
+        return sizedImg(url, 30, 100);
+    }
+
+    function fullImg(url) {
+        // Maximum available clarity for the quick-view image
+        // without increasing its requested dimensions.
+        return sizedImg(
+            url,
+            saverOn ? 500 : 700,
+            100
+        );
+    }
                         
         function renderProductList() {
             const list = document.getElementById('products-list');

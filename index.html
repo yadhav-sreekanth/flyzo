@@ -2946,21 +2946,48 @@
         if (localStorage.getItem('flyzo_saver') === null && isSlowConnection()) {
             saverOn = true;
         }
+    // ─────────────────────────────────────────────
+    // IMAGE BANDWIDTH FUNCTIONS
+    // Stored original: compressed WebP ≤ 100 KB
+    // These control the SIZE/QUALITY requested from Supabase
+    // ─────────────────────────────────────────────
+    function gridThumb(url) {
+            return url;
+    }
 
-        function sizedImg(url, w, q) {
-            if (!url) return url;
-            const sep = url.includes('?') ? '&' : '?';
-            return `${url}${sep}width=${w}&quality=${q}&resize=contain`;
+ 
+
+    function fullImg(url) {
+          return url;
+
+    }
+
+    function sizedImg(url, width, quality) {
+        if (!url) return url;
+
+        // Convert Supabase public Storage URL
+        // into Supabase Image Transformation URL
+        if (url.includes('/storage/v1/object/public/')) {
+            url = url.replace(
+                '/storage/v1/object/public/',
+                '/storage/v1/render/image/public/'
+            );
         }
-        function gridThumb(url) {
-            return sizedImg(url, saverOn ? 140 : 240, saverOn ? 35 : 50);
-        }
-        function tinyPlaceholder(url) {
-            return sizedImg(url, 20, 20);
-        }
-        function fullImg(url) {
-            return sizedImg(url, saverOn ? 400 : 700, saverOn ? 45 : 70);
-        }
+
+        const separator = url.includes('?') ? '&' : '?';
+
+        return `${url}${separator}width=${width}&quality=${quality}&resize=contain`;
+    }
+
+            function tinyPlaceholder(url) {
+                return sizedImg(
+                    url,
+                    32,
+                    28
+                );
+            }
+
+
 
         function refreshSaverUI() {
             const btn = document.getElementById('saver-btn');
