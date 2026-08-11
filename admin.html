@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Flyzo</title>
+    <title>Flyzo Admin</title>
+    <link rel="shortcut icon" href="logo.png" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap"
         rel="stylesheet" />
@@ -32,6 +33,7 @@
             --border: rgba(200, 168, 75, 0.18);
             --border-hover: rgba(200, 168, 75, 0.45);
             --red: #e05252;
+            --grey: #9a9da5;
         }
 
         html,
@@ -129,27 +131,6 @@
             flex-direction: column;
             align-items: center;
             margin-bottom: 28px;
-        }
-
-        .login-logo-circle {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #1a3a2a, #0d2018);
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 20px rgba(200, 168, 75, 0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-
-        .login-logo-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 50%;
         }
 
         .login-title {
@@ -268,25 +249,6 @@
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .nav-logo-circle {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 1.5px solid var(--gold);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #1a3a2a, #0d2018);
-        }
-
-        .nav-logo-circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            border-radius: 50%;
         }
 
         .nav-brand-text {
@@ -449,6 +411,49 @@
             text-transform: uppercase;
             color: var(--gold);
             margin-top: 8px;
+        }
+
+        /* CATEGORY PICKER */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .cat-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 6px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s;
+        }
+
+        .cat-btn .cat-emoji {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .cat-btn span.cat-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .cat-btn.active {
+            background: rgba(200, 168, 75, 0.15);
+            border-color: var(--gold);
+        }
+
+        .cat-btn.active span.cat-label {
+            color: var(--gold-light);
         }
 
         /* SIZES PICKER */
@@ -669,6 +674,33 @@
             color: rgba(200, 168, 75, 0.5);
         }
 
+        /* ADMIN FILTER TABS */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .filter-tab {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            color: rgba(255, 255, 255, 0.55);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .filter-tab.active {
+            background: rgba(200, 168, 75, 0.15);
+            border-color: var(--gold);
+            color: var(--gold-light);
+        }
+
         /* PRODUCT LIST */
         .products-list {
             display: flex;
@@ -758,13 +790,32 @@
             flex-direction: column;
         }
 
+        .product-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
         .product-name {
             font-family: 'Barlow Condensed', sans-serif;
             font-size: 16px;
             font-weight: 700;
             letter-spacing: 0.05em;
             color: var(--white);
-            margin-bottom: 4px;
+        }
+
+        .product-cat-badge {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold-light);
+            background: rgba(200, 168, 75, 0.12);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 7px;
         }
 
         .product-price {
@@ -1080,7 +1131,7 @@
 
         <div class="admin-body">
             <div class="section-title">Add Product</div>
-            <div class="section-sub">Upload · Size · Price</div>
+            <div class="section-sub">Upload · Category · Size · Price</div>
 
             <div class="add-card">
                 <!-- IMAGE UPLOAD -->
@@ -1101,6 +1152,20 @@
                 <label class="sizes-label">Product Name</label>
                 <input type="text" class="name-input" id="product-name"
                     placeholder="e.g. Oversized Tee, Cargo Pants…" />
+
+                <!-- CATEGORY -->
+                <label class="sizes-label">Category</label>
+                <div class="cat-grid" id="cat-grid">
+                    <div class="cat-btn active" data-cat="shoes" onclick="selectCategory(this, 'add')">
+                        <span class="cat-emoji">👟</span><span class="cat-label">Shoes</span>
+                    </div>
+                    <div class="cat-btn" data-cat="accessories" onclick="selectCategory(this, 'add')">
+                        <span class="cat-emoji">🕶️</span><span class="cat-label">Accessories</span>
+                    </div>
+                    <div class="cat-btn" data-cat="clothing" onclick="selectCategory(this, 'add')">
+                        <span class="cat-emoji">👕</span><span class="cat-label">Clothing</span>
+                    </div>
+                </div>
 
                 <!-- SIZES -->
                 <label class="sizes-label">Available Sizes</label>
@@ -1145,6 +1210,15 @@
                 <div class="divider-text">Products (<span id="product-count">0</span>)</div>
                 <div class="divider-line"></div>
             </div>
+
+            <div class="filter-tabs" id="admin-filter-tabs">
+                <div class="filter-tab active" data-filter="all" onclick="setAdminFilter('all')">All</div>
+                <div class="filter-tab" data-filter="shoes" onclick="setAdminFilter('shoes')">👟 Shoes</div>
+                <div class="filter-tab" data-filter="accessories" onclick="setAdminFilter('accessories')">🕶️
+                    Accessories</div>
+                <div class="filter-tab" data-filter="clothing" onclick="setAdminFilter('clothing')">👕 Clothing</div>
+            </div>
+
             <div class="loading-spinner" id="list-spinner"></div>
             <div class="products-list" id="products-list"></div>
             <div class="empty-state" id="empty-state" style="display:none;">
@@ -1173,6 +1247,19 @@
 
             <label class="sizes-label" style="margin-top:12px;">Product Name</label>
             <input type="text" class="name-input" id="edit-product-name" placeholder="Product name" />
+
+            <label class="sizes-label">Category</label>
+            <div class="cat-grid" id="edit-cat-grid">
+                <div class="cat-btn" data-cat="shoes" onclick="selectCategory(this, 'edit')">
+                    <span class="cat-emoji">👟</span><span class="cat-label">Shoes</span>
+                </div>
+                <div class="cat-btn" data-cat="accessories" onclick="selectCategory(this, 'edit')">
+                    <span class="cat-emoji">🕶️</span><span class="cat-label">Accessories</span>
+                </div>
+                <div class="cat-btn" data-cat="clothing" onclick="selectCategory(this, 'edit')">
+                    <span class="cat-emoji">👕</span><span class="cat-label">Clothing</span>
+                </div>
+            </div>
 
             <label class="sizes-label">Available Sizes</label>
             <div class="sizes-grid" id="edit-sizes-grid">
@@ -1231,13 +1318,13 @@
         // ══════════════════════════════════════════════════════
         //  ⚠️  REPLACE THESE WITH YOUR SUPABASE PROJECT VALUES
         // ══════════════════════════════════════════════════════
-          const SUPABASE_URL = 'https://xgdrzqszechfplurkcup.supabase.co';        // e.g. https://xxxxxxxx.supabase.co
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnZHJ6cXN6ZWNoZnBsdXJrY3VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNzQ5MzYsImV4cCI6MjEwMTk1MDkzNn0.lALZcqd_YCYlYaGjmchR_rYlA90UgGrecxbE4-_cx6c';
-        
+        const SUPABASE_URL = 'https://xgdrzqszechfplurkcup.supabase.co';        // e.g. https://xxxxxxxx.supabase.co
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnZHJ6cXN6ZWNoZnBsdXJrY3VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNzQ5MzYsImV4cCI6MjEwMTk1MDkzNn0.lALZcqd_YCYlYaGjmchR_rYlA90UgGrecxbE4-_cx6c';
+
         // ══════════════════════════════════════════════════════        
 
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        // Statef
+        // State
         let selectedFile = null;
         let editSelectedFile = null;
         let editProductId = null;
@@ -1246,6 +1333,12 @@
         let deleteProductImage = null;
         let customSizes = [];
         let editCustomSizes = [];
+        let selectedCategory = 'shoes';
+        let editSelectedCategory = 'shoes';
+        let adminFilter = 'all';
+        let allAdminProducts = [];
+
+        const VALID_CATEGORIES = ['shoes', 'accessories', 'clothing'];
 
         // ── AUTH CHECK ON LOAD ──
         window.addEventListener('DOMContentLoaded', async () => {
@@ -1255,9 +1348,6 @@
         });
 
         // ── LOGIN ──
-
-        // ── LOGIN ──
-
         async function doLogin() {
             const id = document.getElementById('login-id').value.trim();
             const pw = document.getElementById('login-pw').value;
@@ -1275,16 +1365,11 @@
             btn.disabled = true;
             btn.textContent = 'Logging in...';
 
-            console.log("Trying login...");
-
             try {
                 const { data, error } = await db.auth.signInWithPassword({
                     email: id,
                     password: pw
                 });
-
-                console.log(data);
-                console.log(error);
 
                 btn.disabled = false;
                 btn.textContent = 'Login';
@@ -1298,34 +1383,23 @@
                 showAdmin();
 
             } catch (e) {
-                console.log(e);
-
                 btn.disabled = false;
                 btn.textContent = 'Login';
-
                 showErr('Something went wrong');
             }
         }
 
-        // attach click event AFTER function exists
         document.getElementById('login-btn').addEventListener('click', doLogin);
-        // Allow Enter key on password field
         document.addEventListener('keydown', e => {
             if (e.key === 'Enter' && document.getElementById('login-page').style.display !== 'none') doLogin();
         });
 
         function showErr(msg) {
             const el = document.getElementById('login-err');
-
             el.textContent = msg;
             el.style.display = 'block';
-
-            // animation
             el.style.opacity = '0';
-
-            setTimeout(() => {
-                el.style.opacity = '1';
-            }, 10);
+            setTimeout(() => { el.style.opacity = '1'; }, 10);
         }
 
         // ── LOGOUT ──
@@ -1359,6 +1433,15 @@
             zone.querySelector('.img-upload-icon').style.display = 'none';
             zone.querySelector('.img-upload-text').style.display = 'none';
             zone.classList.add('has-img');
+        }
+
+        // ── CATEGORY SELECT (shared by add + edit) ──
+        function selectCategory(btn, mode) {
+            const grid = mode === 'edit' ? document.getElementById('edit-cat-grid') : document.getElementById('cat-grid');
+            grid.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (mode === 'edit') editSelectedCategory = btn.dataset.cat;
+            else selectedCategory = btn.dataset.cat;
         }
 
         // ── SIZE TOGGLE (ADD FORM) ──
@@ -1399,10 +1482,11 @@
         }
 
         // ── ADD PRODUCT ──
-       async function addProduct() {
+        async function addProduct() {
             const name = document.getElementById('product-name').value.trim();
             const rate = document.getElementById('product-rate').value;
             const sizes = getSelectedSizes();
+            const category = selectedCategory;
 
             if (!selectedFile) {
                 showToast('Please select a product image', 'error');
@@ -1411,6 +1495,11 @@
 
             if (!name) {
                 showToast('Enter a product name', 'error');
+                return;
+            }
+
+            if (!VALID_CATEGORIES.includes(category)) {
+                showToast('Select a category', 'error');
                 return;
             }
 
@@ -1429,8 +1518,6 @@
             btn.textContent = 'Adding…';
 
             try {
-                console.log('1. Starting image upload...');
-
                 const imageUrl = await uploadImage(
                     selectedFile,
                     'upload-progress',
@@ -1438,20 +1525,10 @@
                 );
 
                 if (!imageUrl) {
-                    console.error('Image upload returned no URL');
                     btn.disabled = false;
                     btn.textContent = 'Add Product';
                     return;
                 }
-
-                console.log('2. Image uploaded:', imageUrl);
-
-                console.log('3. Inserting product:', {
-                    name,
-                    rate: Number(rate),
-                    sizes,
-                    image_url: imageUrl
-                });
 
                 const { data, error } = await db
                     .from('products')
@@ -1459,25 +1536,18 @@
                         name: name,
                         rate: Number(rate),
                         sizes: sizes,
-                        image_url: imageUrl
+                        image_url: imageUrl,
+                        category: category
                     })
                     .select();
 
                 if (error) {
                     console.error('SUPABASE PRODUCT INSERT ERROR:', error);
-                    console.error('message:', error.message);
-                    console.error('details:', error.details);
-                    console.error('hint:', error.hint);
-                    console.error('code:', error.code);
-
                     showToast(error.message || 'Failed to add product', 'error');
-
                     btn.disabled = false;
                     btn.textContent = 'Add Product';
                     return;
                 }
-
-                console.log('4. Product successfully inserted:', data);
 
                 showToast('Product added!', 'success');
 
@@ -1492,10 +1562,11 @@
             btn.disabled = false;
             btn.textContent = 'Add Product';
         }
-        
+
         function resetAddForm() {
             selectedFile = null;
             customSizes = [];
+            selectedCategory = 'shoes';
             document.getElementById('product-name').value = '';
             document.getElementById('product-rate').value = '';
             document.getElementById('custom-tags').innerHTML = '';
@@ -1508,87 +1579,118 @@
             zone.classList.remove('has-img');
             document.getElementById('product-img-file').value = '';
             document.querySelectorAll('#sizes-grid .size-btn.active').forEach(b => b.classList.remove('active'));
-        }
-   
-        async function compressImage(file) {
-            return new Promise((resolve, reject) => {
-
-                const img = new Image();
-                const canvas = document.createElement("canvas");
-                const ctx = canvas.getContext("2d");
-
-                img.onload = async () => {
-
-                    let width = img.width;
-                    let height = img.height;
-
-                    const MAX_WIDTH = 900;
-
-                    if (width > MAX_WIDTH) {
-                        height = Math.round(height * MAX_WIDTH / width);
-                        width = MAX_WIDTH;
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    let quality = 0.75;
-
-                    function exportImage() {
-
-                        canvas.toBlob(blob => {
-
-                            if (!blob) {
-                                reject(new Error("Image compression failed"));
-                                return;
-                            }
-
-                            // Keep reducing quality until <= 100 KB
-                            if (blob.size > 100000 && quality > 0.20) {
-
-                                quality -= 0.05;
-                                exportImage();
-
-                            } else {
-
-                                resolve(new File(
-                                    [blob],
-                                    file.name.replace(/\.\w+$/, ".webp"),
-                                    {
-                                        type: "image/webp",
-                                        lastModified: Date.now()
-                                    }
-                                ));
-
-                            }
-
-                        }, "image/webp", quality);
-
-                    }
-
-                    exportImage();
-
-                };
-
-                img.onerror = () => {
-                    reject(new Error("Could not load image"));
-                };
-
-                img.src = URL.createObjectURL(file);
-
-            });
+            document.querySelectorAll('#cat-grid .cat-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('#cat-grid .cat-btn[data-cat="shoes"]').classList.add('active');
         }
 
-       async function uploadImage(file, progressId, barId) {
+   async function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+
+            img.onload = () => {
+                let width = img.naturalWidth;
+                let height = img.naturalHeight;
+
+                // Maximum starting resolution
+                const MAX_DIMENSION = 600;
+
+                if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+                    const scale = Math.min(
+                        MAX_DIMENSION / width,
+                        MAX_DIMENSION / height
+                    );
+
+                    width = Math.round(width * scale);
+                    height = Math.round(height * scale);
+                }
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.width = width;
+                canvas.height = height;
+
+                ctx.drawImage(img, 0, 0, width, height);
+
+                let quality = 0.55;
+
+                const MIN_SIZE = 10 * 1024;  // 10 KB
+                const MAX_SIZE = 100 * 1024; // 100 KB
+
+                function compress() {
+                    canvas.toBlob(blob => {
+                        if (!blob) {
+                            reject(new Error('Image compression failed'));
+                            return;
+                        }
+
+                        // Still above 100 KB → reduce quality
+                        if (blob.size > MAX_SIZE && quality > 0.15) {
+                            quality -= 0.05;
+                            compress();
+                            return;
+                        }
+
+                        // Still too large → reduce resolution
+                        if (blob.size > MAX_SIZE && width > 250) {
+                            width = Math.round(width * 0.85);
+                            height = Math.round(height * 0.85);
+
+                            canvas.width = width;
+                            canvas.height = height;
+
+                            ctx.clearRect(0, 0, width, height);
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            quality = 0.40;
+                            compress();
+                            return;
+                        }
+
+                        const compressedFile = new File(
+                            [blob],
+                            file.name.replace(/\.[^.]+$/, '.webp'),
+                            {
+                                type: 'image/webp',
+                                lastModified: Date.now()
+                            }
+                        );
+
+                        console.log(
+                            `Original: ${(file.size / 1024 / 1024).toFixed(2)} MB`
+                        );
+
+                        console.log(
+                            `Compressed: ${(blob.size / 1024).toFixed(1)} KB`
+                        );
+
+                        console.log(
+                            `Resolution: ${width} × ${height}`
+                        );
+
+                        resolve(compressedFile);
+
+                    }, 'image/webp', quality);
+                }
+
+                compress();
+            };
+
+            img.onerror = () => {
+                reject(new Error('Could not load image'));
+            };
+
+            img.src = URL.createObjectURL(file);
+        });
+    }
+        
+        async function uploadImage(file, progressId, barId) {
             const path = `products/${Date.now()}_${Math.random().toString(36).slice(2)}.webp`;
 
             document.getElementById(progressId).style.display = 'block';
             document.getElementById(barId).style.width = '30%';
 
             let compressed;
-
             try {
                 compressed = await compressImage(file);
             } catch (error) {
@@ -1626,6 +1728,13 @@
             return data.publicUrl;
         }
 
+        // ── ADMIN CATEGORY FILTER ──
+        function setAdminFilter(f) {
+            adminFilter = f;
+            document.querySelectorAll('#admin-filter-tabs .filter-tab').forEach(t => t.classList.toggle('active', t.dataset.filter === f));
+            renderProductList();
+        }
+
         // ── LOAD PRODUCTS ──
         async function loadProducts() {
             const spinner = document.getElementById('list-spinner');
@@ -1633,31 +1742,73 @@
             document.getElementById('products-list').innerHTML = '';
             document.getElementById('empty-state').style.display = 'none';
 
-            const { data, error } = await db.from('products').select('*').order('created_at', { ascending: false });
+            const { data, error } = await db.from('products').select('id,name,rate,sizes,image_url,category').order('created_at', { ascending: false });
             spinner.style.display = 'none';
 
             if (error || !data) { showToast('Failed to load products', 'error'); return; }
-            document.getElementById('product-count').textContent = data.length;
+            allAdminProducts = data;
+            renderProductList();
+        }
 
-            if (data.length === 0) {
+        function adminThumb(url) {
+                return sizedImg(url, 160, 45);
+            }
+
+                    function sizedImg(url, w, q) {
+                            if (!url) return url;
+                            const sep = url.includes('?') ? '&' : '?';
+                            return `${url}${sep}width=${w}&quality=${q}&resize=contain`;
+                        }
+                        function gridThumb(url) {
+                            return sizedImg(url, saverOn ? 140 : 240, saverOn ? 35 : 50);
+                        }
+                        function tinyPlaceholder(url) {
+                            return sizedImg(url, 20, 20);
+                        }
+                        function fullImg(url) {
+                            return sizedImg(url, saverOn ? 400 : 700, saverOn ? 45 : 70);
+                        }
+
+                        
+        function renderProductList() {
+            const list = document.getElementById('products-list');
+            list.innerHTML = '';
+
+            const filtered = allAdminProducts.filter(p => {
+                const cat = (p.category || 'clothing').toLowerCase();
+                return adminFilter === 'all' || cat === adminFilter;
+            });
+
+            document.getElementById('product-count').textContent = filtered.length;
+
+            if (filtered.length === 0) {
                 document.getElementById('empty-state').style.display = 'block';
                 return;
             }
+            document.getElementById('empty-state').style.display = 'none';
 
-            const list = document.getElementById('products-list');
-            data.forEach(p => {
+            const catEmoji = { shoes: '👟', accessories: '🕶️', clothing: '👕' };
+
+            filtered.forEach(p => {
+                const cat = (p.category || 'clothing').toLowerCase();
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.id = `card-${p.id}`;
                 card.innerHTML = `
       <div class="product-card-inner">
         <div class="product-img-wrap">
-          <img src="${p.image_url}" alt="${p.name}" loading="lazy" />
+          <img src="${adminThumb(p.image_url)}"
+            alt="${p.name}"
+            loading="lazy"
+            decoding="async">
           <input class="product-img-input" type="file" accept="image/*" onchange="quickChangeImage(this, '${p.id}', '${p.image_url}')" />
           <div class="img-change-overlay">📷 Change</div>
         </div>
         <div class="product-info">
-          <div class="product-name">${p.name}</div>
+          <div class="product-name-row">
+            <div class="product-name">${p.name}</div>
+            <div class="product-cat-badge">${catEmoji[cat] || ''} ${cat}</div>
+          </div>
           <div class="product-price">₹${p.rate.toLocaleString('en-IN')}</div>
           <div class="product-sizes">${(p.sizes || []).map(s => `<span class="product-size-tag">${s}</span>`).join('')}</div>
           <div class="product-actions">
@@ -1677,9 +1828,8 @@
             showToast('Uploading…');
             const newUrl = await uploadImage(file, 'upload-progress', 'upload-progress-bar');
             if (!newUrl) return;
-            const { error } = await supabase.from('products').update({ image_url: newUrl }).eq('id', productId);
+            const { error } = await db.from('products').update({ image_url: newUrl }).eq('id', productId);
             if (error) { showToast('Update failed', 'error'); return; }
-            // Delete old image
             deleteOldImage(oldImageUrl);
             showToast('Image updated!', 'success');
             loadProducts();
@@ -1691,9 +1841,15 @@
             editProductOldImage = product.image_url;
             editSelectedFile = null;
             editCustomSizes = [];
+            editSelectedCategory = (product.category || 'shoes').toLowerCase();
 
             document.getElementById('edit-product-name').value = product.name;
             document.getElementById('edit-product-rate').value = product.rate;
+
+            // Set category
+            document.querySelectorAll('#edit-cat-grid .cat-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.cat === editSelectedCategory);
+            });
 
             // Set preview image
             const zone = document.getElementById('edit-upload-zone');
@@ -1764,7 +1920,10 @@
             const name = document.getElementById('edit-product-name').value.trim();
             const rate = document.getElementById('edit-product-rate').value;
             const sizes = getEditSelectedSizes();
+            const category = editSelectedCategory;
+
             if (!name) { showToast('Enter product name', 'error'); return; }
+            if (!VALID_CATEGORIES.includes(category)) { showToast('Select a category', 'error'); return; }
             if (sizes.length === 0) { showToast('Select at least one size', 'error'); return; }
             if (!rate || Number(rate) <= 0) { showToast('Enter valid price', 'error'); return; }
 
@@ -1779,7 +1938,7 @@
             }
 
             const { error } = await db.from('products').update({
-                name, rate: Number(rate), sizes, image_url: imageUrl
+                name, rate: Number(rate), sizes, image_url: imageUrl, category
             }).eq('id', editProductId);
 
             saveBtn.disabled = false; saveBtn.textContent = 'Save Changes';
@@ -1790,35 +1949,133 @@
             loadProducts();
         }
 
-        // ── DELETE ──
-        function promptDelete(id, imageUrl) {
-            deleteProductId = id;
-            deleteProductImage = imageUrl;
-            document.getElementById('confirm-modal').classList.add('open');
-        }
-        function closeConfirm() {
-            document.getElementById('confirm-modal').classList.remove('open');
-            deleteProductId = null; deleteProductImage = null;
-        }
-        async function confirmDelete() {
-            if (!deleteProductId) return;
-            const { error } = await db.from('products').delete().eq('id', deleteProductId);
-            if (error) { showToast('Delete failed', 'error'); closeConfirm(); return; }
-            deleteOldImage(deleteProductImage);
-            showToast('Product deleted', 'success');
+    // ── DELETE ──
+    function promptDelete(id, imageUrl) {
+        deleteProductId = id;
+        deleteProductImage = imageUrl;
+
+        document.getElementById('confirm-modal').classList.add('open');
+    }
+
+    function closeConfirm() {
+        document.getElementById('confirm-modal').classList.remove('open');
+
+        deleteProductId = null;
+        deleteProductImage = null;
+    }
+
+    async function confirmDelete() {
+        if (!deleteProductId) return;
+
+        const productId = deleteProductId;
+        const imageUrl = deleteProductImage;
+
+        const deleteBtn = document.querySelector('.confirm-yes');
+
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting…';
+
+        try {
+            // 1. Delete product from database
+            const { error: productError } = await db
+                .from('products')
+                .delete()
+                .eq('id', productId);
+
+            if (productError) {
+                console.error('PRODUCT DELETE ERROR:', productError);
+                showToast(productError.message || 'Failed to delete product', 'error');
+                return;
+            }
+
+            // 2. Delete image from Supabase Storage
+            if (imageUrl) {
+                const imageDeleted = await deleteOldImage(imageUrl);
+
+                if (!imageDeleted) {
+                    console.warn(
+                        'Product deleted, but image could not be deleted:',
+                        imageUrl
+                    );
+
+                    showToast(
+                        'Product deleted, but image cleanup failed',
+                        'error'
+                    );
+
+                    closeConfirm();
+                    await loadProducts();
+                    return;
+                }
+            }
+
+            // 3. Everything succeeded
+            showToast('Product and image deleted!', 'success');
+
             closeConfirm();
-            loadProducts();
-        }
+            await loadProducts();
 
-        function deleteOldImage(url) {
-            if (!url) return;
-            try {
-                const path = url.split('/product-images/')[1];
-                if (path) db.storage.from('product-images').remove([path]);
-            } catch (e) { }
-        }
+        } catch (err) {
+            console.error('DELETE CRASH:', err);
+            showToast(err.message || 'Delete failed', 'error');
 
-        // ── CLOSE MODALS ON BACKDROP TAP ──
+        } finally {
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = 'Delete';
+        }
+    }
+
+
+    // ── DELETE IMAGE FROM STORAGE ──
+    async function deleteOldImage(url) {
+        if (!url) return true;
+
+        try {
+            const marker = '/product-images/';
+
+            const markerIndex = url.indexOf(marker);
+
+            if (markerIndex === -1) {
+                console.error('Could not find product-images bucket in URL:', url);
+                return false;
+            }
+
+            // Everything after /product-images/ is the Storage path
+            let path = url.substring(markerIndex + marker.length);
+
+            // Remove query parameters if present
+            path = path.split('?')[0];
+
+            // Decode URL-encoded characters
+            path = decodeURIComponent(path);
+
+            if (!path) {
+                console.error('Empty Storage path:', url);
+                return false;
+            }
+
+            console.log('Deleting Storage image:', path);
+
+            const { data, error } = await db
+                .storage
+                .from('product-images')
+                .remove([path]);
+
+            if (error) {
+                console.error('STORAGE IMAGE DELETE ERROR:', error);
+                return false;
+            }
+
+            console.log('Storage image deleted:', data);
+
+            return true;
+
+        } catch (error) {
+            console.error('IMAGE DELETE CRASH:', error);
+            return false;
+        }
+    }
+       // ── CLOSE MODALS ON BACKDROP TAP ──
         document.getElementById('edit-modal').addEventListener('click', e => {
             if (e.target === document.getElementById('edit-modal')) closeEdit();
         });
