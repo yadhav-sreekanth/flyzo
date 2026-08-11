@@ -931,6 +931,382 @@
             }
         }
 
+/* ============================================================
+   MOBILE CATEGORY REDESIGN
+   Horizontal snap-scroll / full-width feature cards
+   ============================================================ */
+
+@media (max-width: 880px) {
+
+    /* Section becomes edge-to-edge */
+    #categories {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* Keep heading padded */
+    #categories .section-head {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+
+    /*
+       HORIZONTAL CATEGORY RAIL
+       Instead of stacking 3 ugly tiny boxes,
+       users swipe through large cards.
+    */
+    #categories .cat-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        gap: 14px !important;
+
+        padding: 4px 20px 18px !important;
+
+        margin: 0 !important;
+
+        scroll-snap-type: x mandatory !important;
+        scroll-padding-left: 20px !important;
+
+        -webkit-overflow-scrolling: touch !important;
+
+        scrollbar-width: none !important;
+    }
+
+    #categories .cat-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+
+    /* --------------------------------------------------------
+       LARGE MOBILE CATEGORY CARD
+       -------------------------------------------------------- */
+
+    #categories .cat-tile {
+        flex: 0 0 82vw !important;
+
+        width: 82vw !important;
+        min-width: 82vw !important;
+        max-width: 420px !important;
+
+        min-height: 300px !important;
+        height: 300px !important;
+
+        padding: 24px !important;
+
+        border-radius: 22px !important;
+
+        scroll-snap-align: start !important;
+        scroll-snap-stop: always !important;
+
+        transform: none !important;
+
+        box-shadow:
+            0 12px 35px rgba(0, 0, 0, .18) !important;
+    }
+
+
+    /* --------------------------------------------------------
+       BACKGROUND
+       -------------------------------------------------------- */
+
+    #categories .cat-tile .cat-bg {
+        opacity: 1 !important;
+    }
+
+    #categories .cat-tile::after {
+        content: "" !important;
+
+        position: absolute !important;
+        inset: 0 !important;
+
+        z-index: 0 !important;
+
+        background:
+            linear-gradient(
+                to top,
+                rgba(0, 0, 0, .72),
+                rgba(0, 0, 0, .05) 65%
+            ) !important;
+
+        pointer-events: none !important;
+    }
+
+
+    /* --------------------------------------------------------
+       ICON
+       -------------------------------------------------------- */
+
+    #categories .cat-tile .cat-icon {
+        position: relative !important;
+        z-index: 2 !important;
+
+        width: 52px !important;
+        height: 52px !important;
+
+        margin-top: 0 !important;
+        margin-bottom: auto !important;
+
+        opacity: .9 !important;
+    }
+
+
+    /* --------------------------------------------------------
+       ARROW
+       -------------------------------------------------------- */
+
+    #categories .cat-tile .cat-arrow {
+        z-index: 3 !important;
+
+        top: 20px !important;
+        right: 20px !important;
+
+        width: 44px !important;
+        height: 44px !important;
+
+        border-radius: 50% !important;
+
+        background: rgba(255, 255, 255, .06) !important;
+
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+    }
+
+
+    /* --------------------------------------------------------
+       TEXT
+       -------------------------------------------------------- */
+
+    #categories .cat-tile h3 {
+        position: relative !important;
+        z-index: 2 !important;
+
+        font-size: clamp(42px, 12vw, 58px) !important;
+
+        line-height: .9 !important;
+
+        margin: 0 !important;
+    }
+
+    #categories .cat-tile p {
+        position: relative !important;
+        z-index: 2 !important;
+
+        font-size: 11px !important;
+
+        letter-spacing: .13em !important;
+
+        margin-top: 8px !important;
+
+        white-space: nowrap !important;
+    }
+
+
+    /* --------------------------------------------------------
+       SWIPE HINT
+       -------------------------------------------------------- */
+
+    #categories .cat-grid::after {
+        content: "" !important;
+
+        position: sticky !important;
+        right: 20px !important;
+
+        flex: 0 0 auto !important;
+
+        align-self: center !important;
+
+        margin-left: -4px !important;
+
+        font-family: 'Barlow Condensed', sans-serif !important;
+
+        font-size: 9px !important;
+        font-weight: 600 !important;
+
+        letter-spacing: .18em !important;
+
+        color: var(--muted) !important;
+
+        writing-mode: vertical-rl !important;
+        transform: rotate(180deg) !important;
+
+        pointer-events: none !important;
+    }
+}
+
+
+/* ============================================================
+   PHONES
+   ============================================================ */
+
+@media (max-width: 600px) {
+
+    #categories .section-head {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    #categories .cat-grid {
+        gap: 12px !important;
+
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+
+        scroll-padding-left: 16px !important;
+    }
+
+    #categories .cat-tile {
+        flex-basis: 84vw !important;
+        width: 84vw !important;
+        min-width: 84vw !important;
+
+        height: 270px !important;
+        min-height: 270px !important;
+
+        padding: 20px !important;
+
+        border-radius: 20px !important;
+    }
+
+    #categories .cat-tile .cat-icon {
+        width: 46px !important;
+        height: 46px !important;
+    }
+
+    #categories .cat-tile .cat-arrow {
+        top: 16px !important;
+        right: 16px !important;
+
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    #categories .cat-tile h3 {
+        font-size: clamp(40px, 13vw, 54px) !important;
+    }
+
+    #categories .cat-tile p {
+        font-size: 10px !important;
+    }
+}
+
+
+/* ============================================================
+   SMALL PHONES
+   ============================================================ */
+
+@media (max-width: 380px) {
+
+    #categories .cat-grid {
+        gap: 10px !important;
+
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+
+        scroll-padding-left: 12px !important;
+    }
+
+    #categories .cat-tile {
+        flex-basis: 88vw !important;
+        width: 88vw !important;
+        min-width: 88vw !important;
+
+        height: 245px !important;
+        min-height: 245px !important;
+
+        padding: 18px !important;
+
+        border-radius: 18px !important;
+    }
+
+    #categories .cat-tile .cat-icon {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    #categories .cat-tile .cat-arrow {
+        top: 14px !important;
+        right: 14px !important;
+
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    #categories .cat-tile h3 {
+        font-size: 43px !important;
+    }
+
+    #categories .cat-tile p {
+        font-size: 9px !important;
+        letter-spacing: .1em !important;
+    }
+}
+
+
+/* ============================================================
+   TINY PHONES — STILL USABLE AT 200px
+   ============================================================ */
+
+@media (max-width: 260px) {
+
+    #categories .section-head {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    #categories .cat-grid {
+        gap: 8px !important;
+
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+
+        scroll-padding-left: 10px !important;
+    }
+
+    #categories .cat-tile {
+        flex-basis: 88vw !important;
+        width: 88vw !important;
+        min-width: 88vw !important;
+
+        height: 210px !important;
+        min-height: 210px !important;
+
+        padding: 14px !important;
+
+        border-radius: 15px !important;
+    }
+
+    #categories .cat-tile .cat-icon {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    #categories .cat-tile .cat-arrow {
+        top: 10px !important;
+        right: 10px !important;
+
+        width: 31px !important;
+        height: 31px !important;
+    }
+
+    #categories .cat-tile h3 {
+        font-size: 34px !important;
+    }
+
+    #categories .cat-tile p {
+        font-size: 7px !important;
+        white-space: normal !important;
+    }
+}
+
         /* ===== shop section ===== */
         .shop-controls {
             max-width: 1200px;
@@ -1469,6 +1845,626 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* FLYZO — RESPONSIVE MEDIA QUERIES ONLY 
+
+        /* ---------- TABLETS / SMALL LAPTOPS ---------- */
+        @media (max-width: 1100px) {
+            .section-pad {
+                padding-left: 28px;
+                padding-right: 28px;
+            }
+
+            .cat-grid,
+            .product-grid,
+            .footer-grid {
+                max-width: 100%;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 18px;
+            }
+        }
+
+
+        /* ---------- TABLETS / LARGE PHONES ---------- */
+        @media (max-width: 880px) {
+            header {
+                padding: 14px 18px;
+            }
+
+            header.scrolled {
+                padding: 10px 18px;
+            }
+
+            .hero {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .section-pad {
+                padding: 80px 18px;
+            }
+
+            .cat-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .cat-tile {
+                min-height: 300px;
+                padding: 22px 18px;
+            }
+
+            .cat-tile h3 {
+                font-size: 32px;
+            }
+
+            .shop-controls {
+                gap: 10px;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .p-info {
+                padding: 13px 13px 15px;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 28px;
+            }
+        }
+
+
+        /* ---------- PHONES ---------- */
+        @media (max-width: 600px) {
+            .section-pad {
+                padding: 65px 10px;
+            }
+
+            .section-head {
+                margin-bottom: 30px;
+            }
+
+            .section-title {
+                font-size: clamp(30px, 9vw, 44px);
+            }
+
+            .section-desc {
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 100px 12px 50px;
+            }
+
+            .hero-eyebrow {
+                font-size: 9px;
+                letter-spacing: .28em;
+            }
+
+            .hero-wordmark span.ch {
+                font-size: clamp(55px, 20vw, 120px);
+            }
+
+            .hero-tagline {
+                font-size: 11px;
+                letter-spacing: .25em;
+            }
+
+            .hero-sub {
+                font-size: 13px;
+                max-width: 330px;
+                margin-top: 16px;
+            }
+
+            .hero-cta {
+                gap: 8px;
+                margin-top: 24px;
+            }
+
+            .btn {
+                font-size: 11px;
+                padding: 11px 18px;
+            }
+
+            /* Categories */
+            .cat-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .cat-tile {
+                min-height: 190px;
+                padding: 18px;
+            }
+
+            .cat-tile .cat-icon {
+                width: 38px;
+                height: 38px;
+            }
+
+            .cat-tile h3 {
+                font-size: 28px;
+            }
+
+            .cat-tile p {
+                font-size: 10px;
+            }
+
+            /* Shop controls */
+            .shop-controls {
+                display: block;
+                margin-bottom: 20px;
+            }
+
+            .tabs {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 7px;
+                padding-bottom: 5px;
+                scrollbar-width: none;
+            }
+
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+
+            .tab {
+                flex: 0 0 auto;
+                font-size: 11px;
+                padding: 8px 13px;
+            }
+
+            .search-wrap {
+                width: 100%;
+                max-width: none;
+                min-width: 0;
+                margin-top: 10px;
+            }
+
+            /* TWO PRODUCTS PER ROW */
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .p-card {
+                min-width: 0;
+                border-radius: 11px;
+            }
+
+            .p-img {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+            }
+
+            .p-tag {
+                top: 6px;
+                left: 6px;
+                font-size: 8px;
+                padding: 3px 6px;
+            }
+
+            .p-saver {
+                top: 6px;
+                right: 6px;
+                font-size: 7px;
+                padding: 3px 5px;
+            }
+
+            .p-info {
+                padding: 9px 8px 10px;
+            }
+
+            .p-name {
+                font-size: 13px;
+                line-height: 1.15;
+                margin-bottom: 4px;
+
+                /* Prevent long names from breaking the card */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .p-price {
+                font-size: 17px;
+            }
+
+            .p-sizes {
+                gap: 3px;
+                margin-top: 5px;
+            }
+
+            .p-sizes span {
+                font-size: 9px;
+                padding: 2px 5px;
+            }
+
+            .p-quick {
+                display: none;
+            }
+
+            /* Footer */
+            footer {
+                padding: 50px 14px 25px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 25px 15px;
+            }
+
+            .footer-brand {
+                font-size: 25px;
+            }
+
+            .footer-desc {
+                font-size: 12px;
+            }
+
+            .footer-col a {
+                font-size: 12px;
+            }
+
+            .footer-bottom {
+                margin-top: 30px;
+                padding-top: 18px;
+                font-size: 10px;
+            }
+
+            /* Floating buttons */
+            .fab {
+                width: 46px;
+                height: 46px;
+                bottom: 16px;
+            }
+
+            #fab-whatsapp,
+            #fab-top {
+                right: 14px;
+            }
+
+            #fab-top {
+                bottom: 72px;
+            }
+
+            /* Quick view */
+            .modal-backdrop {
+                padding: 8px;
+            }
+
+            .qv-modal {
+                width: 100%;
+                max-height: 94vh;
+                border-radius: 16px;
+            }
+
+            .qv-body {
+                padding: 20px 16px;
+            }
+
+            .qv-name {
+                font-size: 27px;
+            }
+
+            .qv-price {
+                font-size: 23px;
+            }
+        }
+
+
+        /* ---------- SMALL PHONES: 320px ---------- */
+        @media (max-width: 380px) {
+            header {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .brand {
+                font-size: 22px;
+            }
+
+            .nav-right {
+                gap: 6px;
+            }
+
+            .icon-btn,
+            .hamburger {
+                width: 34px;
+                height: 34px;
+            }
+
+            .section-pad {
+                padding-left: 7px;
+                padding-right: 7px;
+            }
+
+            .product-grid {
+                gap: 6px;
+            }
+
+            .p-card {
+                border-radius: 9px;
+            }
+
+            .p-info {
+                padding: 8px 6px 9px;
+            }
+
+            .p-name {
+                font-size: 12px;
+            }
+
+            .p-price {
+                font-size: 16px;
+            }
+
+            .p-sizes span {
+                font-size: 8px;
+                padding: 2px 4px;
+            }
+
+            .hero {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .hero-sub {
+                max-width: 290px;
+                font-size: 12px;
+            }
+        }
+
+
+        /* ---------- VERY SMALL PHONES: 200px–299px ---------- */
+        @media (max-width: 299px) {
+            header {
+                padding: 9px 6px;
+            }
+
+            .brand {
+                font-size: 18px;
+                letter-spacing: .1em;
+            }
+
+            .brand i {
+                width: 4px;
+                height: 4px;
+            }
+
+            .nav-right {
+                gap: 3px;
+            }
+
+            .icon-btn,
+            .hamburger {
+                width: 29px;
+                height: 29px;
+            }
+
+            .icon-btn svg {
+                width: 13px;
+                height: 13px;
+            }
+
+            .hamburger span {
+                width: 12px;
+            }
+
+            .section-pad {
+                padding: 48px 4px;
+            }
+
+            .section-head {
+                margin-bottom: 22px;
+            }
+
+            .section-title {
+                font-size: 27px;
+            }
+
+            .section-desc {
+                font-size: 11px;
+            }
+
+            /* Keep exactly TWO products */
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 4px;
+            }
+
+            .p-card {
+                border-radius: 7px;
+            }
+
+            .p-info {
+                padding: 6px 5px 7px;
+            }
+
+            .p-name {
+                font-size: 10px;
+                margin-bottom: 2px;
+            }
+
+            .p-price {
+                font-size: 14px;
+            }
+
+            .p-sizes {
+                gap: 2px;
+                margin-top: 3px;
+            }
+
+            .p-sizes span {
+                font-size: 7px;
+                padding: 1px 3px;
+            }
+
+            .p-tag,
+            .p-saver {
+                font-size: 6px;
+                padding: 2px 3px;
+            }
+
+            .p-tag {
+                top: 3px;
+                left: 3px;
+            }
+
+            .p-saver {
+                top: 3px;
+                right: 3px;
+            }
+
+            /* Smaller category cards */
+            .cat-tile {
+                min-height: 145px;
+                padding: 13px;
+                border-radius: 10px;
+            }
+
+            .cat-tile .cat-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .cat-tile h3 {
+                font-size: 23px;
+            }
+
+            .cat-tile p {
+                font-size: 7px;
+                letter-spacing: .08em;
+            }
+
+            .cat-tile .cat-arrow {
+                top: 10px;
+                right: 10px;
+                width: 27px;
+                height: 27px;
+            }
+
+            /* Search */
+            .search-wrap input {
+                font-size: 11px;
+                padding: 9px 10px 9px 30px;
+            }
+
+            .search-wrap svg {
+                left: 10px;
+                width: 12px;
+                height: 12px;
+            }
+
+            /* Buttons */
+            .btn {
+                font-size: 9px;
+                padding: 9px 11px;
+                letter-spacing: .12em;
+            }
+
+            /* Footer */
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px 8px;
+            }
+
+            footer {
+                padding: 35px 7px 18px;
+            }
+
+            .footer-brand {
+                font-size: 20px;
+            }
+
+            .footer-desc,
+            .footer-col a {
+                font-size: 9px;
+            }
+
+            .footer-col h4 {
+                font-size: 8px;
+                margin-bottom: 9px;
+            }
+
+            .footer-bottom {
+                font-size: 7px;
+            }
+
+            /* Floating buttons */
+            .fab {
+                width: 38px;
+                height: 38px;
+                bottom: 9px;
+            }
+
+            #fab-whatsapp,
+            #fab-top {
+                right: 7px;
+            }
+
+            #fab-top {
+                bottom: 54px;
+            }
+        }
+
+
+        /* ---------- 200px EDGE CASE ---------- */
+        @media (max-width: 220px) {
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 3px;
+            }
+
+            .section-pad {
+                padding-left: 3px;
+                padding-right: 3px;
+            }
+
+            .p-info {
+                padding: 5px 4px 6px;
+            }
+
+            .p-name {
+                font-size: 9px;
+            }
+
+            .p-price {
+                font-size: 13px;
+            }
+
+            .p-sizes span {
+                font-size: 6px;
+                padding: 1px 2px;
+            }
+
+            .hero-wordmark span.ch {
+                font-size: 48px;
+            }
+
+            .hero-eyebrow {
+                font-size: 7px;
+                letter-spacing: .15em;
+            }
+
+            .hero-tagline {
+                font-size: 8px;
+            }
+
+            .hero-sub {
+                font-size: 10px;
+            }
+        }
+
+
     </style>
 </head>
 
@@ -1727,7 +2723,7 @@
         const SUPABASE_URL = 'https://xgdrzqszechfplurkcup.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhnZHJ6cXN6ZWNoZnBsdXJrY3VwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNzQ5MzYsImV4cCI6MjEwMTk1MDkzNn0.lALZcqd_YCYlYaGjmchR_rYlA90UgGrecxbE4-_cx6c';
         /* ⚠️ REPLACE with your WhatsApp business number, digits only, country code first */
-        const WHATSAPP_NUMBER = '91XXXXXXXXXX';
+        const WHATSAPP_NUMBER = '919292026831';
         /* ══════════════════════════════════════════════════════ */
 
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
