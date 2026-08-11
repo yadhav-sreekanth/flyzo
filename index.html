@@ -3131,6 +3131,129 @@
         function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
         loadProducts();
+
+        /* ============================================================
+       MOBILE CATEGORY AUTO-SWIPE
+       Moves to the next category every 2 seconds
+       ============================================================ */
+
+            (function initMobileCategoryAutoSwipe() {
+                const rail = document.querySelector('#categories .cat-grid');
+
+                if (!rail) return;
+
+                let autoSwipe = null;
+                let currentIndex = 0;
+                let resumeTimer = null;
+
+                function isMobile() {
+                    return window.matchMedia('(max-width: 880px)').matches;
+                }
+
+                function getCards() {
+                    return rail.querySelectorAll('.cat-tile');
+                }
+
+                function startAutoSwipe() {
+                    stopAutoSwipe();
+
+                    if (!isMobile()) return;
+
+                    const cards = getCards();
+
+                    if (cards.length < 2) return;
+
+                    autoSwipe = setInterval(() => {
+                        if (!isMobile()) return;
+
+                        const cards = getCards();
+
+                        currentIndex++;
+
+                        // Loop back to first category
+                        if (currentIndex >= cards.length) {
+                            currentIndex = 0;
+                        }
+
+                        cards[currentIndex].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'start'
+                        });
+
+                    }, 2000);
+                }
+
+                function stopAutoSwipe() {
+                    if (autoSwipe) {
+                        clearInterval(autoSwipe);
+                        autoSwipe = null;
+                    }
+                }
+
+                function temporarilyPause() {
+                    stopAutoSwipe();
+
+                    clearTimeout(resumeTimer);
+
+                    resumeTimer = setTimeout(() => {
+                        // Find currently visible card
+                        const cards = [...getCards()];
+
+                        if (cards.length) {
+                            let closest = 0;
+                            let smallestDistance = Infinity;
+
+                            cards.forEach((card, index) => {
+                                const distance = Math.abs(
+                                    card.getBoundingClientRect().left -
+                                    rail.getBoundingClientRect().left
+                                );
+
+                                if (distance < smallestDistance) {
+                                    smallestDistance = distance;
+                                    closest = index;
+                                }
+                            });
+
+                            currentIndex = closest;
+                        }
+
+                        startAutoSwipe();
+                    }, 4000);
+                }
+
+                /* User manually swipes → pause autoplay */
+                rail.addEventListener('touchstart', temporarilyPause, {
+                    passive: true
+                });
+
+                rail.addEventListener('pointerdown', temporarilyPause);
+
+                /* Desktop hover shouldn't run autoplay */
+                rail.addEventListener('mouseenter', stopAutoSwipe);
+                rail.addEventListener('mouseleave', startAutoSwipe);
+
+                /* Restart correctly when screen size changes */
+                window.addEventListener('resize', () => {
+                    stopAutoSwipe();
+
+                    if (isMobile()) {
+                        const cards = getCards();
+
+                        if (cards.length) {
+                            currentIndex = 0;
+                        }
+
+                        startAutoSwipe();
+                    }
+                });
+
+                /* Start */
+                startAutoSwipe();
+
+            })();
+            
     </script>
 </body>
 
