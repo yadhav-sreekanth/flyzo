@@ -2952,7 +2952,13 @@
     // These control the SIZE/QUALITY requested from Supabase
     // ─────────────────────────────────────────────
     function gridThumb(url) {
-            return url;
+        if (!url) return '';
+
+        return sizedImg(
+            url,
+            saverOn ? 350 : 500,
+            saverOn ? 55 : 70
+        );
     }
 
  
