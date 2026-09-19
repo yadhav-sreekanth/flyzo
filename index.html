@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>Flyzo — Wear Your World</title>
-    <meta name="description" content="Flyzo — Shoes, Accessories & Clothing. Trending wears, made to move." />
+    <title>Outer — Wear Your World</title>
+    <meta name="description" content="Outer — Shoes, Accessories & Clothing. Trending wears, made to move." />
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
@@ -151,7 +151,7 @@
         }
 
 /* =========================================================
-   FLYZO — CINEMATIC PRELOADER
+   Outer — CINEMATIC PRELOADER
    ========================================================= */
 
 #preloader {
@@ -203,7 +203,7 @@
 
 /* ---------- loader content ---------- */
 
-.flyzo-loader {
+.Outer-loader {
     position: relative;
     z-index: 2;
 
@@ -420,7 +420,7 @@
 
 @media (max-width: 600px) {
 
-    .flyzo-loader {
+    .Outer-loader {
         width: 82vw;
     }
 
@@ -2009,7 +2009,7 @@
         }
 
 
-        /* FLYZO — RESPONSIVE MEDIA QUERIES ONLY 
+        /* Outer — RESPONSIVE MEDIA QUERIES ONLY 
 
         /* ---------- TABLETS / SMALL LAPTOPS ---------- */
         @media (max-width: 1100px) {
@@ -2606,14 +2606,14 @@
     <div id="cursor-dot"></div>
     <div id="cursor-ring"></div>
 <div id="preloader">
-    <div class="flyzo-loader">
+    <div class="Outer-loader">
 
         <div class="loader-mark">
-            <span>F</span>
-            <span>L</span>
-            <span>Y</span>
-            <span>Z</span>
             <span>O</span>
+            <span>U</span>
+            <span>T</span>
+            <span>E</span>
+            <span>R</span>
         </div>
 
         <div class="loader-rule">
@@ -2625,7 +2625,7 @@
 
     <!-- NAV -->
     <header id="site-header">
-        <div class="brand" onclick="scrollToTop()"><i></i>FLYZO</div>
+        <div class="brand" onclick="scrollToTop()"><i></i>OUTER</div>
         <nav class="links">
             <a href="#shoes" data-cat="shoes">Shoes</a>
             <a href="#accessories" data-cat="accessories">Accessories</a>
@@ -2683,7 +2683,7 @@
             can't move in.</p>
         <div class="hero-cta">
             <a href="#shop" class="btn btn-solid">Shop The Drop</a>
-            <a href="https://www.instagram.com/flyzo._/" class="btn btn-ghost">Catch us on Instagram</a>
+            <a href="https://www.instagram.com/outerwholesale/" class="btn btn-ghost">Catch us on Instagram</a>
         </div>
        
     </section>
@@ -2691,10 +2691,10 @@
     <!-- MARQUEE -->
     <div class="marquee-strip">
         <div class="marquee-track">
-            <span class="solid">FLYZO</span><span>SHOES</span><span
+            <span class="solid">Outer</span><span>SHOES</span><span
                 class="solid">ACCESSORIES</span><span>CLOTHING</span><span class="solid">NEW DROP</span><span>MADE TO
                 MOVE</span>
-            <span class="solid">FLYZO</span><span>SHOES</span><span
+            <span class="solid">Outer</span><span>SHOES</span><span
                 class="solid">ACCESSORIES</span><span>CLOTHING</span><span class="solid">NEW DROP</span><span>MADE TO
                 MOVE</span>
         </div>
@@ -2782,7 +2782,7 @@
     <!-- FOOTER -->
     <footer>
         <div class="footer-bottom">
-            <span>© <span id="year"></span> Flyzo. All rights reserved.</span>
+            <span>© <span id="year"></span> Outer. All rights reserved.</span>
         </div>
     </footer>
 
@@ -2831,8 +2831,8 @@
 
         const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         document.getElementById('year').textContent = new Date().getFullYear();
-        document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Flyzo! I have a question about your products.')}`;
-        document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Flyzo! I have a question about your products.')}`;
+        document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Outer! I have a question about your products.')}`;
+        document.getElementById('fab-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi Outer! I have a question about your products.')}`;
 
     /* ---------- hero wordmark split ---------- */
 
@@ -2842,7 +2842,7 @@
 
         if (wordmark) {
 
-            'FLYZO'.split('').forEach((ch, i) => {
+            'Outer'.split('').forEach((ch, i) => {
 
                 const s = document.createElement('span');
 
@@ -2936,14 +2936,14 @@
            - a blur-up placeholder fades to the real image once
              it has actually loaded, so nothing ever pops in raw
            ══════════════════════════════════════════════════════ */
-        let saverOn = localStorage.getItem('flyzo_saver') === '1';
+        let saverOn = localStorage.getItem('Outer_saver') === '1';
 
         function isSlowConnection() {
             const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
             if (!c) return false;
             return c.saveData === true || ['slow-2g', '2g', '3g'].includes(c.effectiveType);
         }
-        if (localStorage.getItem('flyzo_saver') === null && isSlowConnection()) {
+        if (localStorage.getItem('Outer_saver') === null && isSlowConnection()) {
             saverOn = true;
         }
     // ─────────────────────────────────────────────
@@ -3005,7 +3005,7 @@
         }
         function setSaver(v) {
             saverOn = v;
-            localStorage.setItem('flyzo_saver', v ? '1' : '0');
+            localStorage.setItem('Outer_saver', v ? '1' : '0');
             refreshSaverUI();
             renderGrid();
         }
@@ -3150,7 +3150,7 @@
         }
         function updateWhatsappLink() {
             if (!currentProduct) return;
-            const msg = `Hi Flyzo! I'm interested in "${currentProduct.name}"${currentSize ? ' (Size: ' + currentSize + ')' : ''} — ₹${Number(currentProduct.rate).toLocaleString('en-IN')}. Is it available?`;
+            const msg = `Hi Outer! I'm interested in "${currentProduct.name}"${currentSize ? ' (Size: ' + currentSize + ')' : ''} — ₹${Number(currentProduct.rate).toLocaleString('en-IN')}. Is it available?`;
             document.getElementById('qv-whatsapp').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
         }
         function closeQuickView() {
